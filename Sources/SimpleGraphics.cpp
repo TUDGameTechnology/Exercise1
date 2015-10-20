@@ -28,11 +28,7 @@ void setPixel(int x, int y, float red, float green, float blue) {
 	int r = (int)(red * 255);
 	int g = (int)(green * 255);
 	int b = (int)(blue * 255);
-#ifdef OPENGL
-	image[y * texture->width + x] = 0xff << 24 | b << 16 | g << 8 | r;
-#else
-	image[y * texture->width + x] = 0xff << 24 | r << 16 | g << 8 | b;
-#endif
+	image[y * texture->texWidth + x] = 0xff << 24 | r << 16 | g << 8 | b;
 }
 
 void endFrame() {
@@ -41,10 +37,11 @@ void endFrame() {
 	Graphics::begin();
 	Graphics::clear(Graphics::ClearColorFlag, 0xff000000);
 
+	
 	program->set();
-	texture->set(tex);
-	vb->set();
-	ib->set();
+	Graphics::setTexture(tex, texture);
+	Graphics::setVertexBuffer(*vb);
+	Graphics::setIndexBuffer(*ib);
 	Graphics::drawIndexedVertices();
 
 	Graphics::end();
@@ -66,14 +63,28 @@ void initGraphics() {
 
 	tex = program->getTextureUnit("tex");
 
-	vb = new VertexBuffer(4, structure);
+	texture = new Texture(width, height, Image::RGBA32, false);
+	image = (int*)texture->lock();
+	for (int y = 0; y < texture->texHeight; ++y) {
+		for (int x = 0; x < texture->texWidth; ++x) {
+			image[y * texture->texWidth + x] = 0;
+		}
+	}
+	texture->unlock();
+
+	// Correct for the difference between the texture's desired size and the actual power of 2 size
+	float xAspect = (float) texture->width / texture->texWidth;
+	float yAspect = (float) texture->height / texture->texHeight;
+	
+
+	vb = new VertexBuffer(4, structure, 0);
 	float* v = vb->lock();
 	{
 		int i = 0;
 		v[i++] = -1; v[i++] = 1; v[i++] = 0.5; v[i++] = 0; v[i++] = 0;
-		v[i++] = 1;  v[i++] = 1; v[i++] = 0.5; v[i++] = 1; v[i++] = 0;
-		v[i++] = 1; v[i++] = -1;  v[i++] = 0.5; v[i++] = 1; v[i++] = 1;
-		v[i++] = -1; v[i++] = -1;  v[i++] = 0.5; v[i++] = 0; v[i++] = 1;
+		v[i++] = 1;  v[i++] = 1; v[i++] = 0.5; v[i++] = xAspect; v[i++] = 0;
+		v[i++] = 1; v[i++] = -1;  v[i++] = 0.5; v[i++] = xAspect; v[i++] = yAspect;
+		v[i++] = -1; v[i++] = -1;  v[i++] = 0.5; v[i++] = 0; v[i++] = yAspect;
 	}
 	vb->unlock();
 
@@ -85,12 +96,4 @@ void initGraphics() {
 		ii[i++] = 1; ii[i++] = 2; ii[i++] = 3;
 	}
 	ib->unlock();
-	texture = new Texture(width, height, Image::RGBA32, false);
-	image = (int*)texture->lock();
-	for (int y = 0; y < texture->height; ++y) {
-		for (int x = 0; x < texture->width; ++x) {
-			image[y * texture->width + x] = 0;
-		}
-	}
-	texture->unlock();
 }

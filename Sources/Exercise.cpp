@@ -11,13 +11,12 @@ namespace {
 		startFrame();
 
 		// Draw something right here using setPixel(...)
-
 		endFrame();
 	}
 }
 
 int kore(int argc, char** argv) {
-	Application* app = new Application(argc, argv, width, height, false, "Exercise1");
+	Application* app = new Application(argc, argv, width, height, 0, false, "Exercise1");
 	
 	initGraphics();
 	
