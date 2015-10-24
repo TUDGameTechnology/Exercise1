@@ -4,5 +4,6 @@ void initGraphics();
 void startFrame();
 void endFrame();
 void setPixel(int x, int y, float red, float green, float blue);
-const int width = 1024;
-const int height = 1024;
+// Watch out: If you set one or both values higher than your screen resolution, you can get errors.
+const int width = 512;
+const int height = 512;
