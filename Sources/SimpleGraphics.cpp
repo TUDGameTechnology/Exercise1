@@ -25,6 +25,7 @@ void startFrame() {
 }
 
 void setPixel(int x, int y, float red, float green, float blue) {
+	if (x < 0 || x >= width || y < 0 || y >= height) return;
 	int r = (int)(red * 255);
 	int g = (int)(green * 255);
 	int b = (int)(blue * 255);
