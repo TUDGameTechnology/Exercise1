@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "SimpleGraphics.h"
-#include <Kore/Application.h>
 #include <Kore/IO/FileReader.h>
 #include <Kore/Graphics/Graphics.h>
 #include <Kore/Graphics/Shader.h>
@@ -21,6 +20,7 @@ namespace {
 }
 
 void startFrame() {
+	Graphics::begin();
 	image = (int*)texture->lock();
 }
 
@@ -35,7 +35,6 @@ void setPixel(int x, int y, float red, float green, float blue) {
 void endFrame() {
 	texture->unlock();
 
-	Graphics::begin();
 	Graphics::clear(Graphics::ClearColorFlag, 0xff000000);
 
 	
@@ -45,8 +44,8 @@ void endFrame() {
 	Graphics::setIndexBuffer(*ib);
 	Graphics::drawIndexedVertices();
 
-	Graphics::end();
 	Graphics::swapBuffers();
+	Graphics::end();
 }
 
 void initGraphics() {

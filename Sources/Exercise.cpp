@@ -1,8 +1,8 @@
 #include "pch.h"
 
-#include <Kore/Application.h>
 #include <Kore/IO/FileReader.h>
 #include "SimpleGraphics.h"
+#include <Kore/System.h>
 
 using namespace Kore;
 
@@ -16,13 +16,26 @@ namespace {
 }
 
 int kore(int argc, char** argv) {
-	Application* app = new Application(argc, argv, width, height, 0, false, "Exercise1");
-	
+	Kore::System::setName("TUD Game Technology - ");
+	Kore::System::setup();
+	Kore::WindowOptions options;
+	options.title = "Exercise 1";
+	options.width = width;
+	options.height = height;
+	options.x = 100;
+	options.y = 100;
+	options.targetDisplay = -1;
+	options.mode = WindowModeWindow;
+	options.rendererOptions.depthBufferBits = 16;
+	options.rendererOptions.stencilBufferBits = 8;
+	options.rendererOptions.textureFormat = 0;
+	options.rendererOptions.antialiasing = 0;
+	Kore::System::initWindow(options);
+
 	initGraphics();
+	Kore::System::setCallback(update);
 	
-	app->setCallback(update);
-	app->start();
-	delete app;
-	
+	Kore::System::start();
+
 	return 0;
 }
