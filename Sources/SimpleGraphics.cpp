@@ -36,7 +36,6 @@ void endFrame() {
 	texture->unlock();
 
 	Graphics::clear(Graphics::ClearColorFlag, 0xff000000);
-
 	
 	program->set();
 	Graphics::setTexture(tex, texture);
@@ -44,8 +43,8 @@ void endFrame() {
 	Graphics::setIndexBuffer(*ib);
 	Graphics::drawIndexedVertices();
 
-	Graphics::swapBuffers();
 	Graphics::end();
+	Graphics::swapBuffers();
 }
 
 void initGraphics() {
