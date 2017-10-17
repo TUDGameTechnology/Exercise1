@@ -1,40 +1,31 @@
 #include "pch.h"
 
 #include <Kore/IO/FileReader.h>
-#include "SimpleGraphics.h"
 #include <Kore/System.h>
+#include <Kore/Graphics1/Graphics.h>
+
+const int width = 512;
+const int height = 512;
 
 using namespace Kore;
 
 namespace {
 	void update() {
-		startFrame();
+		Graphics1::begin();
+
 		//////////////////////////////////////////////////////////////////////////
 		// Exercise 1
 		//////////////////////////////////////////////////////////////////////////
-		// Draw something right here using setPixel(...)
-		endFrame();
+		// Draw something right here using Graphics1::setPixel(...)
+
+		Graphics1::end();
 	}
 }
 
 int kore(int argc, char** argv) {
-	Kore::System::setName("TUD Game Technology - ");
-	Kore::System::setup();
-	Kore::WindowOptions options;
-	options.title = "Exercise 1";
-	options.width = width;
-	options.height = height;
-	options.x = 100;
-	options.y = 100;
-	options.targetDisplay = -1;
-	options.mode = WindowModeWindow;
-	options.rendererOptions.depthBufferBits = 16;
-	options.rendererOptions.stencilBufferBits = 8;
-	options.rendererOptions.textureFormat = 0;
-	options.rendererOptions.antialiasing = 0;
-	Kore::System::initWindow(options);
+	System::init("Exercise 1", width, height);
 
-	initGraphics();
+	Graphics1::init(width, height);
 	Kore::System::setCallback(update);
 	
 	Kore::System::start();
