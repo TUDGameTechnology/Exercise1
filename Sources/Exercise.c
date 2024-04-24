@@ -7,7 +7,7 @@
 const int width = 512;
 const int height = 512;
 
-void update() {
+void update(void* data) {
 	kinc_g1_begin();
 
 	//////////////////////////////////////////////////////////////////////////
