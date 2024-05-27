@@ -4,8 +4,8 @@
 #include <kinc/io/filereader.h>
 #include <kinc/system.h>
 
-const int width = 512;
-const int height = 512;
+#define WIDTH 512
+#define HEIGHT 512
 
 void update(void* data) {
 	kinc_g1_begin();
@@ -19,9 +19,9 @@ void update(void* data) {
 }
 
 int kickstart(int argc, char** argv) {
-	kinc_init("Exercise 1", width, height, NULL, NULL);
+	kinc_init("Exercise 1", WIDTH, HEIGHT, NULL, NULL);
 
-	kinc_g1_init(width, height);
+	kinc_g1_init(WIDTH, HEIGHT);
 	kinc_set_update_callback(update, NULL);
 
 	kinc_start();
